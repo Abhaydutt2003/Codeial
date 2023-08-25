@@ -3,6 +3,10 @@ const app = express();
 
 const port = 8000;
 
+//use express layouts
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
+
 //use express router
  app.use('/',require('./routes/index'));
 
