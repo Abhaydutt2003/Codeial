@@ -1,11 +1,18 @@
 const User = require('../models/user');
 
 module.exports.profile = function(request,response){
-    //return response.end('<h1>some user profile</h1>');
-    
-    response.render('user_profile',{
-        title:'profile page'
-    });
+    if(request.cookies.user_id){
+        User.findById(request.cookies.user_id).then(function(user){
+            return response.render('user_profile',{
+                title:"User profile",
+                user:user
+            });
+        }).catch(function(){
+            return response.redirect('/user/sign-in');
+        })
+    }else{
+        response.redirect('/users/sign-in')
+    }
 }
 
 
@@ -49,5 +56,33 @@ module.exports.create = function(request,response){
 
 //sign in and create the user session
 module.exports.createSession = function(request,response){
-    //TODO later
+    User.findOne({email:request.body.email}).then(function(user){
+        
+        if(user){
+            if(user.password != request.body.password){
+                return response.redirect('back');
+            }else{
+                response.cookie('user_id',user.id);
+                return response.redirect('/users/profile');
+            }
+        }else{
+            return response.redirect('back');
+        }
+
+
+
+    }).catch(function(error){
+        console.log("Error in signing in the user");
+    })    
 }
+
+//signing out the user
+// module.exports.signOut = function(request,response){
+//     if(request.cookies.user_id){
+//         let removing = response.cookies.remove({
+//             name:"user_id"
+//         });
+//     }else{
+//         return response.redirect('users/sign-in');
+//     }
+// }
