@@ -1,0 +1,29 @@
+*{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#header-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color:#7cacf8;
+    #s-cod{
+        color: white;
+    }
+    #inner-box{
+        width: 10vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        a{
+            text-decoration: none;
+            color: white;
+            font-size: larger;
+            transition: 1s ease-in-out;
+        }
+        a:hover{
+            color: orange;
+        }
+    }
+}

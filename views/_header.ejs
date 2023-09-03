@@ -1,3 +1,22 @@
+<link rel = "stylesheet" href = "/css/header_style.css">
 <header>
-    <p> header section</p>
+
+    <div id = "header-box">
+        <h2 id = "s-Cod">Codeial</h2>
+
+        <% if(locals.user) {%>
+            <div id = "inner-box">
+            <a href = "/users/profile"><%= locals.user.name %></a>
+            <a href = "/users/sign-out">Sign Out</a> 
+            </div>
+        <% }else{ %>
+            <div id = "inner-box">
+            <a href = "/users/sign-in">Sign In</a>
+            <a href = "/users/sign-up">Sign Up</a>
+            </div>
+        <% } %> 
+
+    </div>
+
+
 </header>
