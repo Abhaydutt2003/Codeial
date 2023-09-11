@@ -20,13 +20,21 @@ module.exports.create = function (request, response) {
 module.exports.destroy = function (request, response) {
     Post.findById(request.params.id).then(function (post) {
         //.id means converting the object id into String
-        if (post.user == req.user.id) {
-            post.remove();
+        if (post.user == request.user.id) {
+            // post.remove();
+            Post.deleteOne(post).then(function(){
+                console.log("Deleted the post");
+            }).catch(function(){
+                console.log("Error in deleting the post");
+                return response.redirect('back');
+            });
+
 
             Comment.deleteMany({ post: request.params.id }).then().catch(function (error) {
                 console.log(error);
                 return response.redirect('back');
             })
+            return response.redirect("back");
         }
     }).catch(function (error) {
         console.log(error);

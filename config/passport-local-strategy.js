@@ -55,7 +55,7 @@ passport.setAuthUser = function (request, response, next) {
     next();
 }
 
-//is the user signed in
+//is the user signed in?
 passport.checkSignedIn = function (request, response, next) {
     if (request.isAuthenticated()) {
         return response.redirect('/users/profile');

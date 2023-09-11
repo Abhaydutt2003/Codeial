@@ -1,11 +1,20 @@
 const User = require('../models/user');
 
 module.exports.profile = function (request, response) {
-    //return response.end('<h1>some user profile</h1>');
+    // //return response.end('<h1>some user profile</h1>');
 
-    response.render('user_profile', {
-        title: 'profile page'
-    });
+    // response.render('user_profile', {
+    //     title: 'profile page'
+    // });
+    User.findById(request.params.id).then(function(u){
+        return response.render('user_profile',{
+            title:'Profile Page',
+            profile_user:u
+        })
+    })
+    .catch(function(){
+
+    })
 }
 
 

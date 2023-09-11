@@ -20,3 +20,30 @@ module.exports.create = function (request, response) {
         return;
     })
 }
+
+module.exports.destroyComment = function (request, response) {
+    comment.findById(request.params.id)
+        .then(function (comm) {
+            if (comm.user == request.user.id) {
+                //delete the comment from all places
+                post.findByIdAndUpdate(comm.post, { $pull: { comments: request.params.id } }).then()
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                comment.deleteOne(comm).then(function () {
+                    console.log("deleted comment");
+                }).catch(function () {
+                    console.log("error in deleting comment");
+                    return response.redirect('back');
+                });
+                return response.redirect('back');
+            } else {
+                console.log("HelloWo");
+                return response.redirect('back');
+            }
+        }).catch(function (error) {
+            console.log("Here error 1");
+            console.log(error);
+            return response.redirect('back');
+        })
+}
