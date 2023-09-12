@@ -1,21 +1,32 @@
 const User = require('../models/user');
 
 module.exports.profile = function (request, response) {
-    // //return response.end('<h1>some user profile</h1>');
-
-    // response.render('user_profile', {
-    //     title: 'profile page'
-    // });
-    User.findById(request.params.id).then(function(u){
-        return response.render('user_profile',{
-            title:'Profile Page',
-            profile_user:u
+    User.findById(request.params.id).then(function (u) {
+        return response.render('user_profile', {
+            title: 'Profile Page',
+            profile_user: u
         })
     })
-    .catch(function(){
+        .catch(function () {
 
-    })
+        })
 }
+
+module.exports.update = function (request, response) {
+    if (request.user.id == request.params.id) {
+        // User.findByIdAndUpdate(request.params.id,{name:request.body.name,email:request.body.email})
+        User.findByIdAndUpdate(request.params.id, request.body).then(function () {
+            console.log('Updated User');
+            return response.redirect('back');
+        }).catch(function () {
+            console.log(error);
+            return response.redirect('back');
+        })
+    } else {
+        return response.status(401).send('Unauthorized');
+    }
+}
+
 
 
 module.exports.signUp = function (request, response) {
