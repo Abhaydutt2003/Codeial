@@ -9,6 +9,14 @@ module.exports.create = function (request, response) {
         content: request.body.content,
         user: request.user._id
     }).then(function (Post) {
+        if(request.xhr){
+            return response.status(200).json({
+                data:{
+                    post:Post
+                },
+                message:"Post created!"
+            })
+        }
         return response.redirect('back');
     }).catch(function (error) {
         console.log("Error in creating the post ");
