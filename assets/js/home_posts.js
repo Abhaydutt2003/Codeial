@@ -12,6 +12,7 @@
                 success: function (data) {
                     let newPost = newPostDOM(data.data.post);
                     $('#post-list-container>ul').prepend(newPost);
+                    deletePost($(` .delete-post-button`, newPost));
                 }, error: function (error) {
                     console.log(error.responseText);
                 }
@@ -48,6 +49,30 @@
                     </div>
     </li>`)
     }
+
+    //method to delete a post from DOM
+    let deletePost = function(deleteLink){
+        console.log('My life is ruined');
+        $(deleteLink).click(function(event){
+            event.preventDefault();
+            console.log('My day is ruined');
+            $.ajax({
+                type:'get',
+                url:$(deleteLink).prop('href'),
+                success:function(data){
+                    console.log('And my diss is umes');
+                    $(`#post-${data.data.post_id}`).remove();
+                },error:function(error){
+                    console.log(error,responseText);
+                }
+            })
+        })
+    }
+
+
+
+
+
 
     createPost();
 }

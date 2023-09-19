@@ -35,13 +35,20 @@ module.exports.destroy = function (request, response) {
             }).catch(function(){
                 console.log("Error in deleting the post");
                 return response.redirect('back');
-            });
+            }); 
 
 
             Comment.deleteMany({ post: request.params.id }).then().catch(function (error) {
                 console.log(error);
-                return response.redirect('back');
             })
+            if(request.xhr){
+                return response.status(200).json({
+                    data:{
+                        post_id:request.params.id
+                    },
+                    message:'AJAX post deletion'
+                })
+            }
             return response.redirect("back");
         }
     }).catch(function (error) {
