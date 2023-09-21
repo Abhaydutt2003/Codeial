@@ -10,6 +10,16 @@ module.exports.create = function (request, response) {
         }).then(function (comment) {
             post.comments.push(comment);
             post.save();
+            if(request.xhr){
+                console.log('Hello from comments');
+                return response.status(200).json({
+                    data:{
+                        comm:comment,
+                        postId:request.body.post
+                    },
+                    message:"Comment Created"
+                })
+            }
             response.redirect('/');
         }).catch(function (error) {
             console.log(error);

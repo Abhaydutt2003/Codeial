@@ -7,14 +7,16 @@ const Comment = require('../models/comment');
 module.exports.create = function (request, response) {
     Post.create({
         content: request.body.content,
-        user: request.user._id
+        user: request.user._id,
     }).then(function (Post) {
         if(request.xhr){
+            console.log("Heello from posts");
             return response.status(200).json({
                 data:{
-                    post:Post
+                    post:Post,
                 },
-                message:"Post created!"
+                message:"Post created!",
+                flashMessage:'Post Created Successfully'
             })
         }
         return response.redirect('back');
