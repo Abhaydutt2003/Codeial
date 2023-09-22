@@ -1,5 +1,6 @@
 const User = require('../models/user');
-
+const fs = require('fs');
+const path = require('path');
 module.exports.profile = function (request, response) {
     User.findById(request.params.id).then(function (u) {
         return response.render('user_profile', {
@@ -15,10 +16,31 @@ module.exports.profile = function (request, response) {
 module.exports.update = function (request, response) {
     if (request.user.id == request.params.id) {
         // User.findByIdAndUpdate(request.params.id,{name:request.body.name,email:request.body.email})
-        User.findByIdAndUpdate(request.params.id, request.body).then(function () {
-            console.log('Updated User');
-            return response.redirect('back');
-        }).catch(function () {
+        // User.findByIdAndUpdate(request.params.id, request.body).then(function () {
+        //     console.log('Updated User');
+        //     return response.redirect('back');
+        // }).catch(function () {
+        //     console.log(error);
+        //     return response.redirect('back');
+        // })
+        User.findById(request.params.id).then(function(user){
+            User.uploadedAvatar(request,response,function(error){
+                if(error){
+                    console.log('*******-Multer Error-********',error);
+                }
+                console.log(request.file);
+                user.name = request.body.name;
+                user.email = request.body.email;
+                if(request.file){
+                    if(user.avatar){
+                        fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+                    }
+                    user.avatar = User.avatarPath+'/'+request.file.filename;
+                }
+                user.save();
+                return response.redirect('back');
+            })
+        }).catch(function(error){
             console.log(error);
             return response.redirect('back');
         })
