@@ -15,14 +15,6 @@ module.exports.profile = function (request, response) {
 
 module.exports.update = function (request, response) {
     if (request.user.id == request.params.id) {
-        // User.findByIdAndUpdate(request.params.id,{name:request.body.name,email:request.body.email})
-        // User.findByIdAndUpdate(request.params.id, request.body).then(function () {
-        //     console.log('Updated User');
-        //     return response.redirect('back');
-        // }).catch(function () {
-        //     console.log(error);
-        //     return response.redirect('back');
-        // })
         User.findById(request.params.id).then(function(user){
             User.uploadedAvatar(request,response,function(error){
                 if(error){

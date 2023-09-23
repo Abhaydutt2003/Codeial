@@ -1,15 +1,33 @@
 <link rel = "stylesheet" href = "/css/user_style.css">
 
 <img src = "<%= user.avatar%>" alt = "<%=user.name%>" width="100">
+
         <% if(user.id == profile_user.id) {%>
             <!--The user match, show update form -->
             <form action = "/users/update/<%=profile_user.id%>" enctype = "multipart/form-data" method = "POST">
                 <input type = "text" name = "name" placeholder="UpdatedName" value = "<%=profile_user.name%>">
                 <input type = "email" name = "email" placeholder="UpdatedEmail" value = "<%=profile_user.email%>">
-                <input type = "file" name = "avatar" placeholder = "Profile Picture" >
+                <input id = "imageInput" type = "file" name = "avatar" placeholder = "Profile Picture" >
                 <input type ="submit" value = "Update">
             </form>
+            <img id = "PreviewImage" alt = "<%=user.name%>" width="100">
         <% }else{ %>
             <p><%= profile_user.name%></p>
             <p><%= profile_user.email%></p>
         <% } %>
+
+        <script>
+            const imageInput = document.getElementById('imageInput');
+            const previewImage = document.getElementById('PreviewImage');
+            function previewSelectedImage(){
+                const file = imageInput.files[0];
+                if(file){
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e){
+                        previewImage.src = e.target.result;
+                    }
+                }
+            }
+            imageInput.addEventListener('change',previewSelectedImage);
+        </script>
