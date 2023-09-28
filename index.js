@@ -1,8 +1,10 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const bodyParser = require("body-parser");
 
 const app = express();
+//const bodyParser = require("body-parser");
+app.use(express.json({limit:'20mb'}));
+app.use(express.urlencoded({ extended: false, limit: '20mb' }));
 
 const port = 8000;
 
@@ -32,7 +34,7 @@ app.use(sassMiddleWare({
 }))
 
 
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
@@ -79,7 +81,9 @@ app.use(fMiddlerware.setFlash);
 
 //use express router
 app.use('/', require('./routes/index'));
-
+// const router = require('./routes/index');
+// router.use(bodyParser.json());
+// app.use('/',router);
 
 app.listen(port, function (error) {
     if (error) {

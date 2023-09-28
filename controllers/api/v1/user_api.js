@@ -1,7 +1,8 @@
 const User = require('../../../models/user');
 const jwt = require('jsonwebtoken');
 
-module.exports.createSession = function(response,request){
+
+module.exports.createSession = function(request,response){
     User.findOne({
         email:request.body.email
     }).then(function(user){
@@ -10,7 +11,7 @@ module.exports.createSession = function(response,request){
                 message:"Invalid username or Password"
             })
         }else{
-            return response.json(200).json({
+            return response.status(200).json({
                 message:'Sign in successful,here is the token, keep it safe',
                 data:{
                     token:jwt.sign(user.toJSON(),'Rick Astley',{expiresIn:'10000'})
